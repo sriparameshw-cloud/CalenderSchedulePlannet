@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Advanced Calendar Planner</title>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial;
+            margin: 20px;
+        }
+        #calendar {
+            max-width: 800px;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>📅 My Calendar Planner</h1>
+
+<div id="calendar"></div>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    let savedEvents = JSON.parse(localStorage.getItem("events")) || [];
+
+    let calendarEl = document.getElementById('calendar');
+
+    let calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+
+        selectable: true,
+
+        dateClick: function(info) {
+            let title = prompt("Enter Event Title:");
+            if (title) {
+                let event = {
+                    title: title,
+                    start: info.dateStr
+                };
+
+                calendar.addEvent(event);
+
+                savedEvents.push(event);
+                localStorage.setItem("events", JSON.stringify(savedEvents));
+            }
+        },
+
+        events: savedEvents
+    });
+
+    calendar.render();
+});
+</script>
+
+</body>
+</html>
